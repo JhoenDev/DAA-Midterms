@@ -1,0 +1,4 @@
+Cooking Oil,3,725
+Soap,7,500
+Noodles,2.5,375
+Canned Goods,5,450
