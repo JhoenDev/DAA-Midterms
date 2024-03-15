@@ -1,0 +1,105 @@
+package project;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.*;
+
+public class Customer {
+    private static Scanner scanner = new Scanner(System.in);
+    private String name;
+    private String address;
+
+    public Customer(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    
+    private static void displayCustomers(ArrayList<Customer> customers) {
+        // Display customers and addresses
+        System.out.println("Customer's Name\t\tAddress");
+        System.out.println("-------------------------------------------------------------------");
+        for (Customer customer : customers) {
+            System.out.printf("%-23s %s\n", customer.getName(), customer.getAddress());
+
+        }
+    }
+    private static HashMap<String, HashMap<String, Integer>> distances = new HashMap<>();
+
+    private static void initializeDistances() {
+
+    	addDistance("Burgos Rodriguez Rizal", "Burgos Rodriguez Rizal", 0);
+        addDistance("Burgos Rodriguez Rizal", "New Era Central Ave Quezon City", 300);
+        addDistance("Burgos Rodriguez Rizal", "Tandang Sora Quezon City", 150);
+        addDistance("Burgos Rodriguez Rizal", "Muntinlupa Batasan San Mateo", 200);
+
+        addDistance("New Era Central Ave Quezon City", "Burgos Rodriguez Rizal", 150);
+        addDistance("New Era Central Ave Quezon City", "New Era Central Ave Quezon City", 0);
+        addDistance("New Era Central Ave Quezon City", "Tandang Sora Quezon City", 200);
+        addDistance("New Era Central Ave Quezon City", "Muntinlupa Batasan San Mateo", 300);
+
+        addDistance("Tandang Sora Quezon City", "Burgos Rodriguez Rizal", 100);
+        addDistance("Tandang Sora Quezon City", "New Era Central Ave Quezon City", 120);
+        addDistance("Tandang Sora Quezon City", "Tandang Sora Quezon City", 0);
+        addDistance("Tandang Sora Quezon City", "Muntinlupa Batasan San Mateo", 200);
+
+        addDistance("Muntinlupa Batasan San Mateo", "Burgos Rodriguez Rizal", 200);
+        addDistance("Muntinlupa Batasan San Mateo", "New Era Central Ave Quezon City", 200);
+        addDistance("Muntinlupa Batasan San Mateo", "Tandang Sora Quezon City", 100);
+        addDistance("Muntinlupa Batasan San Mateo", "Muntinlupa Batasan San Mateo", 0);
+    }
+
+    private static void addDistance(String from, String to, int distance) {
+        distances.computeIfAbsent(from, k -> new HashMap<>()).put(to, distance);
+    }
+
+    private static void displayDistanceTable() {
+        System.out.printf("%-40s", "Distances");
+        for (String destination : distances.keySet()) {
+            System.out.printf("%-30s", destination);
+        }
+        System.out.println();
+
+        for (String origin : distances.keySet()) {
+            System.out.printf("%-40s", origin);
+            for (String destination : distances.keySet()) {
+                int distance = distances.get(origin).getOrDefault(destination, -1);
+                System.out.printf("%-30s", distance >= 0 ? distance : "N/A");
+            }
+            System.out.println();
+            
+        }
+    }
+    public static void main(String[] args) {
+        ArrayList<Customer> customers = new ArrayList<>();
+        customers.add(new Customer("Jhoen Alban", "9 Murphy St Burgos Rodriguez Rizal"));
+        customers.add(new Customer("Alyssa San Pedro", "6 Joseph St New Era Central Ave Quezon City"));
+        customers.add(new Customer("Kathrine Dato", "8 Peter St Tandang Sora Quezon City"));
+        customers.add(new Customer("Vina Solitario", "10 Lake St Muntinlupa Batasan San Mateo"));
+
+        // Ask user for table choice
+        System.out.println("Which table do you want to see?");
+        System.out.println("a. Customer's Name and Address");
+        System.out.println("b. Distances Table");
+        System.out.print("Enter your choice (1 or 2): ");
+        System.out.println();
+        int choice = scanner.nextInt();
+
+        // Display chosen table
+        if (choice == 1) {
+            displayCustomers(customers);
+        } else if (choice == 2) {
+            initializeDistances();
+            displayDistanceTable();
+        } else {
+            System.out.println("Invalid choice. Please enter 1 or 2.");
+        }
+    }
+}
